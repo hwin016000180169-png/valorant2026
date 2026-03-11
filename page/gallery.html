@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALORANT GALLERY - 명장면 갤러리</title>
+    <style>
+        :root {
+            --color-primary: #FF4655;
+            --color-secondary: #0F1923;
+            --color-accent: #53E9FF;
+            --color-gold: #FFD700;
+            --color-dark: #0A0E12;
+            --color-light: #ECF0F1;
+            
+            --font-display: 'Druk Wide', 'Impact', sans-serif;
+            --font-body: 'DIN Next', 'Helvetica Neue', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-dark);
+            color: var(--color-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--color-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-primary);
+            border-radius: 4px;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: rgba(10, 14, 18, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 70, 85, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--color-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--color-light);
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            padding: 0.5rem 1rem;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        .nav-links a.active {
+            color: var(--color-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-primary);
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Header */
+        .page-header {
+            margin-top: 80px;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(255, 70, 85, 0.15) 0%, rgba(83, 233, 255, 0.1) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 70, 85, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 80% 50%, rgba(83, 233, 255, 0.2) 0%, transparent 40%);
+            animation: galleryShimmer 8s ease-in-out infinite;
+        }
+
+        @keyframes galleryShimmer {
+            0%, 100% { transform: translateX(0); opacity: 0.5; }
+            50% { transform: translateX(20px); opacity: 1; }
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            color: var(--color-light);
+            text-shadow: 0 0 40px rgba(255, 70, 85, 0.5);
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            background: rgba(255, 70, 85, 0.1);
+            border: 2px solid rgba(255, 70, 85, 0.3);
+            color: var(--color-light);
+            padding: 0.8rem 2rem;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+            transition: 0.3s;
+            z-index: -1;
+        }
+
+        .filter-tab:hover::before,
+        .filter-tab.active::before {
+            left: 0;
+        }
+
+        .filter-tab.active {
+            border-color: var(--color-primary);
+            color: var(--color-dark);
+        }
+
+        /* Gallery Grid */
+        .gallery-container {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 2rem;
+            grid-auto-flow: dense;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 350px;
+            background: linear-gradient(135deg, rgba(15, 25, 35, 0.8) 0%, rgba(10, 14, 18, 0.9) 100%);
+            border: 2px solid rgba(255, 70, 85, 0.2);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gallery-item.large {
+            grid-column: span 2;
+            height: 450px;
+        }
+
+        .gallery-item:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 80px rgba(255, 70, 85, 0.4);
+            z-index: 10;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #FF4655 0%, #53E9FF 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            transition: 0.4s;
+        }
+
+        .gallery-item.large .gallery-image {
+            font-size: 8rem;
+        }
+
+        .gallery-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: imageGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes imageGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(0deg, rgba(10, 14, 18, 0.95) 0%, transparent 100%);
+            transform: translateY(100%);
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-category {
+            display: inline-block;
+            background: var(--color-primary);
+            color: var(--color-dark);
+            padding: 0.3rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            color: var(--color-light);
+        }
+
+        .gallery-item.large .gallery-title {
+            font-size: 2rem;
+        }
+
+        .gallery-description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: rgba(236, 240, 241, 0.8);
+        }
+
+        .gallery-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--color-accent);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 18, 0.98);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .lightbox.active {
+            display: flex;
+            animation: lightboxFade 0.3s ease;
+        }
+
+        @keyframes lightboxFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .lightbox-content {
+            max-width: 1200px;
+            width: 100%;
+            position: relative;
+            animation: lightboxSlide 0.4s ease;
+        }
+
+        @keyframes lightboxSlide {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: none;
+            border: none;
+            color: var(--color-light);
+            font-size: 3rem;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-close:hover {
+            color: var(--color-primary);
+            transform: rotate(90deg);
+        }
+
+        .lightbox-image {
+            width: 100%;
+            height: 600px;
+            background: linear-gradient(135deg, #FF4655 0%, #53E9FF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10rem;
+            margin-bottom: 2rem;
+            border: 3px solid var(--color-primary);
+        }
+
+        .lightbox-info {
+            padding: 2rem;
+            background: rgba(15, 25, 35, 0.8);
+            border: 2px solid rgba(255, 70, 85, 0.3);
+        }
+
+        .lightbox-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+        }
+
+        .lightbox-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: rgba(236, 240, 241, 0.9);
+            margin-bottom: 1.5rem;
+        }
+
+        .lightbox-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .meta-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--color-light);
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(15, 25, 35, 0.5);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 70, 85, 0.2);
+            margin-top: 4rem;
+        }
+
+        .footer-text {
+            color: rgba(236, 240, 241, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-item,
+            .gallery-item.large {
+                grid-column: span 1;
+                height: 350px;
+            }
+
+            .gallery-image,
+            .gallery-item.large .gallery-image {
+                font-size: 4rem;
+            }
+
+            .lightbox-image {
+                height: 400px;
+                font-size: 6rem;
+            }
+
+            .lightbox-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="index.html" class="logo">VALORANT</a>
+            <ul class="nav-links">
+                <li><a href="/index.html">HOME</a></li>
+                <li><a href="agents.html">AGENTS</a></li>
+                <li><a href="maps.html">MAPS</a></li>
+                <li><a href="tournaments.html">TOURNAMENTS</a></li>
+                <li><a href="gallery.html" class="active">GALLERY</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="page-header">
+        <h1 class="page-title">GALLERY</h1>
+        <p class="page-subtitle">Legendary Moments</p>
+    </header>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">ALL</button>
+        <button class="filter-tab" data-filter="clutch">🎯 CLUTCH</button>
+        <button class="filter-tab" data-filter="ace">⚔️ ACE</button>
+        <button class="filter-tab" data-filter="tactical">🧠 TACTICAL</button>
+        <button class="filter-tab" data-filter="highlight">⚡ HIGHLIGHT</button>
+    </div>
+
+    <!-- Gallery Grid -->
+    <div class="gallery-container">
+        <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()">×</button>
+            <div id="lightboxImageContainer"></div>
+            <div class="lightbox-info">
+                <h2 class="lightbox-title" id="lightboxTitle"></h2>
+                <p class="lightbox-description" id="lightboxDescription"></p>
+                <div class="lightbox-meta" id="lightboxMeta"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">
+            © 2026 VALORANT ESPORTS. All rights reserved.<br>
+            2026 KIMDONGHWI PORTFOLIO
+        </p>
+    </footer>
+
+    <script>
+        // Gallery Data
+        const galleryItems = [
+            {
+                id: 1,
+                category: 'clutch',
+                icon: '🎯',
+                color: '#e74c3c',
+                title: 'THE IMPOSSIBLE CLUTCH',
+                description: '1 vs 5 상황에서 믿을 수 없는 역전극을 만들어낸 전설적인 순간. 완벽한 포지셔닝과 정확한 에임으로 하나씩 제압하며 만든 기적.',
+                player: 'TenZ',
+                tournament: 'VCT Champions 2024',
+                date: 'August 2024',
+                views: '2.5M',
+                likes: '180K',
+                large: true
+            },
+            {
+                id: 2,
+                category: 'ace',
+                icon: '⚔️',
+                color: '#3498db',
+                title: 'PERFECT ACE',
+                description: '단 30초 만에 완벽한 에이스를 달성한 하이라이트. 각각의 킬이 예술 작품처럼 완벽했던 순간.',
+                player: 'Aspas',
+                tournament: 'VCT Masters Madrid',
+                date: 'March 2024',
+                views: '1.8M',
+                likes: '145K'
+            },
+            {
+                id: 3,
+                category: 'tactical',
+                icon: '🧠',
+                color: '#2ecc71',
+                title: 'IQ 200 PLAY',
+                description: '천재적인 전략과 타이밍으로 상대팀을 완벽하게 속인 플레이. 게임 이해도의 차이를 보여준 명장면.',
+                player: 'FNS',
+                tournament: 'VCT Lock//In',
+                date: 'February 2024',
+                views: '1.2M',
+                likes: '98K'
+            },
+            {
+                id: 4,
+                category: 'highlight',
+                icon: '⚡',
+                color: '#f39c12',
+                title: 'INSANE FLICK SHOT',
+                description: '인간의 반응속도를 의심하게 만드는 초고속 플릭샷. 순간적인 반응과 정확도가 만든 예술.',
+                player: 'Demon1',
+                tournament: 'VCT Champions LA',
+                date: 'August 2023',
+                views: '3.1M',
+                likes: '220K',
+                large: true
+            },
+            {
+                id: 5,
+                category: 'clutch',
+                icon: '🎯',
+                color: '#9b59b6',
+                title: 'OVERTIME HERO',
+                description: '오버타임 매치 포인트에서 팀을 승리로 이끈 클러치. 엄청난 압박감 속에서 냉정함을 유지한 플레이.',
+                player: 'Yay',
+                tournament: 'VCT Masters Copenhagen',
+                date: 'July 2022',
+                views: '1.5M',
+                likes: '112K'
+            },
+            {
+                id: 6,
+                category: 'ace',
+                icon: '⚔️',
+                color: '#e67e22',
+                title: 'OPERATOR MASTERCLASS',
+                description: '오퍼레이터 하나로 5명을 처치한 완벽한 퍼포먼스. 각도와 타이밍이 완벽했던 경기.',
+                player: 'cNed',
+                tournament: 'VCT EMEA',
+                date: 'May 2024',
+                views: '2.0M',
+                likes: '165K'
+            },
+            {
+                id: 7,
+                category: 'tactical',
+                icon: '🧠',
+                color: '#1abc9c',
+                title: 'FAKE STRATEGY',
+                description: '페이크 전략으로 상대를 완벽히 속이고 빈 사이트를 점령한 IQ 플레이.',
+                player: 'Boaster',
+                tournament: 'VCT Masters Tokyo',
+                date: 'June 2023',
+                views: '900K',
+                likes: '75K'
+            },
+            {
+                id: 8,
+                category: 'highlight',
+                icon: '⚡',
+                color: '#e74c3c',
+                title: '360 NO SCOPE',
+                description: '360도 회전 노스코프로 적을 제압한 믿기 힘든 순간. 행운과 실력의 완벽한 조화.',
+                player: 'Jinggg',
+                tournament: 'VCT Pacific',
+                date: 'April 2024',
+                views: '2.8M',
+                likes: '210K'
+            },
+            {
+                id: 9,
+                category: 'clutch',
+                icon: '🎯',
+                color: '#3498db',
+                title: 'KNIFE KILL CLUTCH',
+                description: '총알이 떨어진 상황에서 나이프로 마지막 적을 제압한 극적인 클러치.',
+                player: 'Something',
+                tournament: 'VCT Shanghai',
+                date: 'May 2024',
+                views: '1.6M',
+                likes: '135K',
+                large: true
+            },
+            {
+                id: 10,
+                category: 'ace',
+                icon: '⚔️',
+                color: '#2ecc71',
+                title: 'PISTOL ROUND ACE',
+                description: '권총 라운드에서 완벽한 에이스를 달성하며 경기의 흐름을 가져간 순간.',
+                player: 'Meteor',
+                tournament: 'VCT Korea',
+                date: 'March 2024',
+                views: '1.1M',
+                likes: '89K'
+            },
+            {
+                id: 11,
+                category: 'tactical',
+                icon: '🧠',
+                color: '#9b59b6',
+                title: 'SMOKE HEAVEN PLAY',
+                description: '연막 속에서 적의 위치를 완벽하게 예측하고 제압한 고차원 플레이.',
+                player: 'MaKo',
+                tournament: 'VCT Seoul',
+                date: 'September 2024',
+                views: '850K',
+                likes: '68K'
+            },
+            {
+                id: 12,
+                category: 'highlight',
+                icon: '⚡',
+                color: '#f39c12',
+                title: 'TRIPLE COLLATERAL',
+                description: '한 발의 총알로 3명을 동시에 처치한 역사적인 순간. 완벽한 라인업이 만든 기적.',
+                player: 'Zekken',
+                tournament: 'VCT Americas',
+                date: 'July 2024',
+                views: '2.2M',
+                likes: '175K'
+            }
+        ];
+
+        // Render Gallery
+        function renderGallery(filter = 'all') {
+            const grid = document.getElementById('galleryGrid');
+            const filtered = filter === 'all' 
+                ? galleryItems 
+                : galleryItems.filter(item => item.category === filter);
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="gallery-item ${item.large ? 'large' : ''}" onclick="openLightbox(${item.id})" data-category="${item.category}">
+                    <div class="gallery-image" style="background: linear-gradient(135deg, ${item.color} 0%, #53E9FF 100%);">
+                        ${item.icon}
+                    </div>
+                    <div class="gallery-overlay">
+                        <span class="gallery-category">${item.category.toUpperCase()}</span>
+                        <h3 class="gallery-title">${item.title}</h3>
+                        <p class="gallery-description">${item.description}</p>
+                        <div class="gallery-stats">
+                            <span class="stat-item">👁️ ${item.views}</span>
+                            <span class="stat-item">❤️ ${item.likes}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Animate items
+            document.querySelectorAll('.gallery-item').forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 50);
+            });
+        }
+
+        // Filter Tabs
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                renderGallery(tab.dataset.filter);
+            });
+        });
+
+        // Lightbox Functions
+        function openLightbox(id) {
+            const item = galleryItems.find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('lightboxImageContainer').innerHTML = `
+                <div class="lightbox-image" style="background: linear-gradient(135deg, ${item.color} 0%, #53E9FF 100%);">
+                    ${item.icon}
+                </div>
+            `;
+            document.getElementById('lightboxTitle').textContent = item.title;
+            document.getElementById('lightboxDescription').textContent = item.description;
+            document.getElementById('lightboxMeta').innerHTML = `
+                <div class="meta-item">
+                    <span class="meta-label">Player</span>
+                    <span class="meta-value">${item.player}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Tournament</span>
+                    <span class="meta-value">${item.tournament}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Date</span>
+                    <span class="meta-value">${item.date}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Views</span>
+                    <span class="meta-value">${item.views}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Likes</span>
+                    <span class="meta-value">${item.likes}</span>
+                </div>
+            `;
+
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close lightbox on outside click
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox') {
+                closeLightbox();
+            }
+        });
+
+        // Close lightbox on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // Initial render
+        renderGallery();
+    </script>
+</body>
+</html>

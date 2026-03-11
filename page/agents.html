@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALORANT AGENTS - 요원 소개</title>
+    <style>
+        :root {
+            --color-primary: #FF4655;
+            --color-secondary: #0F1923;
+            --color-accent: #53E9FF;
+            --color-gold: #FFD700;
+            --color-dark: #0A0E12;
+            --color-light: #ECF0F1;
+            
+            --font-display: 'Druk Wide', 'Impact', sans-serif;
+            --font-body: 'DIN Next', 'Helvetica Neue', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-dark);
+            color: var(--color-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--color-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-primary);
+            border-radius: 4px;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: rgba(10, 14, 18, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 70, 85, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--color-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--color-light);
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            padding: 0.5rem 1rem;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        .nav-links a.active {
+            color: var(--color-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-primary);
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Header */
+        .page-header {
+            margin-top: 80px;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(255, 70, 85, 0.1) 0%, transparent 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,70,85,0.05)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            animation: gridFlow 20s linear infinite;
+        }
+
+        @keyframes gridFlow {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 100px); }
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            color: var(--color-light);
+            text-shadow: 0 0 40px rgba(255, 70, 85, 0.5);
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        /* Role Filter */
+        .role-filter {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .role-filter img {
+            width: 1.5rem;
+            height: 1.5rem;
+            display: inline-block;
+            margin-top: 3px;
+        }
+        .role-btn {
+            background: rgba(255, 70, 85, 0.1);
+            border: 2px solid var(--color-primary);
+            color: var(--color-light);
+            padding: 0.8rem 2rem;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .role-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--color-primary);
+            transition: 0.3s;
+            z-index: -1;
+        }
+
+        .role-btn:hover::before,
+        .role-btn.active::before {
+            left: 0;
+        }
+
+        .role-btn.active {
+            border-color: var(--color-primary);
+            color: var(--color-dark);
+        }
+
+        /* Agents Grid */
+        .agents-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .agent-card {
+            background: linear-gradient(135deg, rgba(15, 25, 35, 0.8) 0%, rgba(10, 14, 18, 0.9) 100%);
+            border: 2px solid rgba(255, 70, 85, 0.2);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            height: 450px;
+        }
+
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            opacity: 0;
+            transition: 0.4s;
+            z-index: 0;
+        }
+
+        .agent-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--color-primary);
+            box-shadow: 0 20px 60px rgba(255, 70, 85, 0.3);
+        }
+
+        .agent-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #FF4655 0%, #53E9FF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .agent-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: var(--agent-image, none);
+            background-position: top;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        @keyframes agentGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .agent-info {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .agent-role {
+            font-size: 0.75rem;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .agent-name {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            
+            color: var(--color-light);
+        }
+
+        .agent-description {
+            font-size: 0.9rem;
+            color: rgba(236, 240, 241, 0.7);
+            line-height: 1.6;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 18, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 2rem 0;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            max-width: 900px;
+            width: 90%;
+            background: linear-gradient(135deg, rgba(15, 25, 35, 0.9) 0%, rgba(10, 14, 18, 0.95) 100%);
+            border: 2px solid var(--color-primary);
+            padding: 3rem;
+            position: relative;
+            margin: 0 2rem 2rem 2rem;
+            animation: modalSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+            .role-icon {
+                width: 1.5rem;       /* 텍스트 크기에 맞춰 너비 조정 */
+                height: 1.5rem;      /* 높이 조정 */
+                object-fit: contain; /* 이미지 비율 유지 */
+                vertical-align: middle; /* 텍스트와 수직 정렬 맞춤 */
+                margin-right: 5px;   /* 텍스트와의 간격 */
+                margin-top: -3px;    /* 미세 위치 조정 (필요 시) */
+            }
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--color-light);
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--color-primary);
+            transform: rotate(90deg);
+        }
+
+        .modal-agent-name {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+        }
+
+        .modal-agent-role {
+            font-size: 1rem;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        .modal-agent-bio {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(236, 240, 241, 0.9);
+            margin-bottom: 2rem;
+        }
+
+        .abilities-section {
+            margin-top: 2rem;
+        }
+
+        .abilities-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--color-light);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .ability {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(255, 70, 85, 0.05);
+            border-left: 3px solid var(--color-accent);
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+        .ability:hover {
+            background: rgba(255, 70, 85, 0.15); /* 호버 시 배경색 살짝 변경 */
+        }
+
+
+        .ability-video-wrapper {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.4s ease;
+            margin-top: 0;
+            opacity: 0;
+        }
+
+        .ability:hover .ability-video-wrapper {
+            max-height: 400px; /* 비디오 높이에 맞춰 넉넉하게 설정 */
+            margin-top: 1rem;
+            opacity: 1;
+        }
+
+        .ability-video {
+            width: 100%;
+            border-radius: 4px;
+            border: 1px solid var(--color-primary);
+            background: #000;
+            display: block;
+        }
+        .ability-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--color-accent);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .ability-description {
+            color: rgba(236, 240, 241, 0.8);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(15, 25, 35, 0.5);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 70, 85, 0.2);
+            margin-top: 4rem;
+        }
+
+        .footer-text {
+            color: rgba(236, 240, 241, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .agents-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 3rem;
+            }
+
+            .modal-content {
+                padding: 2rem;
+            }
+
+            .modal-agent-name {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="index.html" class="logo">VALORANT</a>
+            <ul class="nav-links">
+                <li><a href="/index.html" >HOME</a></li>
+                <li><a href="/page/agents.html"class="active">AGENTS</a></li>
+                <li><a href="/page/maps.html">MAPS</a></li>
+                <li><a href="/page/tournaments.html">TOURNAMENTS</a></li>
+                <li><a href="/page/gallery.html">GALLERY</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="page-header">
+        <h1 class="page-title">AGENTS</h1>
+        <p class="page-subtitle">Choose Your Warrior</p>
+    </header>
+
+    <!-- Role Filter -->
+    <div class="role-filter">
+        <button class="role-btn active" data-role="all">ALL</button>
+        <button class="role-btn" data-role="duelist"><img src="/images/roles/duelist.png" alt=""> DUELIST</button>
+        <button class="role-btn" data-role="controller"><img src="/images/roles/controller.png" alt=""> CONTROLLER</button>
+        <button class="role-btn" data-role="sentinel"><img src="/images/roles/sentinel.png" alt=""> SENTINEL</button>
+        <button class="role-btn" data-role="initiator"><img src="/images/roles/initiator.png" alt=""> INITIATOR</button>
+    </div>
+
+    <!-- Agents Grid -->
+    <div class="agents-container">
+        <div class="agents-grid" id="agentsGrid"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="agentModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">
+            © 2026 VALORANT ESPORTS. All rights reserved.<br>
+            2026 KIMDONGHWI PORTFOLIO
+        </p>
+    </footer>
+
+    <script>
+        // Agents Data
+        const agents = [
+            {
+                id: 1,
+                name: "JETT",
+                role: "duelist",
+                icon: "🌪️",
+                image: "/images/jett.png",
+                description: "민첩한 바람의 전사. 초고속 이동으로 적을 압도합니다.",
+                bio: "한국 출신의 Jett는 바람을 자유자재로 다루는 능력을 가진 요원입니다. 그녀의 빠른 움직임과 공격적인 플레이 스타일은 적진을 돌파하는 데 최적화되어 있습니다.",
+             abilities: [
+            { 
+                name: "상승 기류", 
+                description: "제트가 즉시 높이 날아오릅니다.",
+                // 실제 영상 링크 추가
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/4cbc968f05713579aae9464c5a16dc3f6863f943.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "순풍", 
+                description: "활성화 시 일정 시간 동안 돌풍을 준비합니다. 돌풍을 다시 사용하면 제트가 이동 방향으로 빠르게 이동합니다. 제트가 가만히 서 있을 경우에는 앞으로 빠르게 이동합니다. 순풍 충전량은 2킬마다 초기화됩니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/ec6b3cf1f8ac09d597b0193de1d7bb81335b40e4.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "연막 폭발", 
+                description: "표면에 닿아 충격을 받으면 구름으로 팽창해 잠시 시야를 가리는 투사체를 즉시 던집니다. 스킬 키를 길게 누르면 연기가 조준점 방향으로 휘어집니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/3353597819f0c032d56ff947d9762368b4ee6c6b.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "칼날 폭풍", 
+                description: "명중률이 높은 투척용 단검을 장착합니다. 발사하면 단검 하나를 던지며, 처치 시 단검을 충전합니다. 보조 공격 시 남은 단검을 전부 던집니다. 이 경우 처치 시 단검이 충전되지 않습니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/667770571300e065b332617e5c8f2e009ed88928.mp4?accountingTag=VAL"
+            }
+        ]
+    },
+            {
+                id: 2,
+                name: "PHOENIX",
+                role: "duelist",
+                icon: "🔥",
+                image: "/images/phoenix.png",
+                description: "불사조의 힘으로 부활하는 불꽃의 전사.",
+                bio: "영국 출신의 Phoenix는 화염을 다루는 능력으로 자신을 치유하고 적을 제압합니다. 그의 궁극기는 죽음에서 부활할 수 있게 해줍니다.",
+                 abilities: [
+            { 
+                name: "커브볼", 
+                description: "던지면 휘어져 날아간 후 곧 폭발하는 섬광 구슬을 장착합니다. 발사하면 섬광 구슬이 왼쪽으로 휘어지며 폭발합니다. 이때 구슬을 바라보는 플레이어는 전부 실명합니다. 보조 공격 시 섬광 구슬이 오른쪽으로 휘어집니다.",
+                // 실제 영상 링크 추가
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/c62125b1b5637b7b0e0881348502f7e8b8e93572.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "뜨거운 손", 
+                description: "화염구를 장착합니다. 발사하면 일정 시간이 지나거나 땅에 닿은 후 폭발하는 화염구를 던집니다. 폭발 지점에는 일정 시간 유지되는 화염 구역이 생성되어 적에게 피해를 입힙니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/b702ed368fd050e7cb77adf26bc55bb63c5936fb.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "불길", 
+                description: "화염 장벽을 장착합니다. 발사하면 앞으로 이동하는 여러 개의 화염을 일렬로 생성하여 시야를 차단하고 통과하는 플레이어에게 피해를 입히는 화염 장벽을 생성합니다. 발사를 길게 누르면 조준점 방향으로 장벽 궤적을 바꿉니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/8c5b0e23be0814583ad4601b4297d04dbaff79f7.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "역습", 
+                description: "즉시 피닉스의 위치에 표식을 놓습니다. 스킬 사용 도중 죽거나 지속시간이 끝나면 해당 위치에서 최대 체력으로 부활합니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/aa122a33b1ef0320174991b8ddee4e82dbc2b937.mp4?accountingTag=VAL"
+            }
+        ]
+    },
+            {
+                id: 3,
+                name: "SAGE",
+                role: "sentinel",
+                icon: "❄️",
+                image: "/images/sage.png",
+                description: "중국의 현자. 치유와 방어의 대가.",
+                bio: "중국 출신의 Sage는 팀의 생명선입니다. 그녀의 치유 능력과 방어 스킬은 팀을 안전하게 지켜줍니다.",
+                 abilities: [
+            { 
+                name: "둔화 구슬", 
+                description: "둔화 구슬을 장착합니다. 발사하면 땅에 닿은 후 폭발하여 일정 시간 동안 둔화 영역을 생성하는 구슬을 던집니다. 둔화 영역에 있는 플레이어는 속도가 느려집니다.",
+                // 실제 영상 링크 추가
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/45053483528b96cbe003ac39e6b53c9866d5fea6.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "회복 구슬", 
+                description: "회복 구슬을 장착합니다. 피해를 입은 아군을 조준한 후 발사하면 해당 아군이 서서히 체력을 회복합니다. 세이지가 피해를 입었을 때 보조 공격 시 자신의 체력을 서서히 회복합니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/a247d196383136d3de15b4d6d9c816e3c8054ba0.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "장벽 구슬", 
+                description: "장벽 구슬을 장착합니다. 발사하면 단단한 장벽을 설치합니다. 보조 공격 시 장벽이 회전합니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/a79b1d6838cee5572b428babd74a2db0c07f4ea5.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "부활", 
+                description: "부활 스킬을 장착합니다. 죽은 아군을 조준한 후 발사하면 해당 아군이 부활하기 시작합니다. 짧은 정신 집중이 끝나면 아군이 최대 체력으로 되살아납니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/df83929ed5da349c37a5bf4600c2b55010c72402.mp4?accountingTag=VAL"
+            }
+        ]
+    },
+            {
+                id: 4,
+                name: "BRIMSTONE",
+                role: "controller",
+                icon: "💥",
+                image: "/images/brimstone.png",
+                description: "미국의 베테랑 지휘관. 하늘에서 지원 사격.",
+                bio: "미국 출신의 베테랑 지휘관 Brimstone은 전장을 조율하는 능력이 뛰어납니다. 그의 스모크와 궤도 폭격은 전장을 장악합니다.",
+               abilities: [
+            { 
+                name: "소이탄", 
+                description: "소이탄 발사기를 장착합니다. 발사하면 바닥에 떨어졌을 때 폭발하는 소이탄을 날려 적에게 피해를 입히는 화염 구역을 생성합니다. 생성된 구역은 일정 시간 유지됩니다.",
+                // 실제 영상 링크 추가
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/9df59d490062acceb7c6ca32a3650b55718381f7.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "공중 연막", 
+                description: "전술 지도를 장착합니다. 발사하면 브림스톤의 연막을 퍼뜨릴 위치를 설정합니다. 보조 공격 시 위치 확정 후 연막을 날려 한동안 선택한 지역의 시야를 차단합니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/8e0b72295747346b60c354765944f5233fb208f2.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "자극제 신호기", 
+                description: "자극제 신호기를 장착합니다. 발사하면 브림스톤 앞에 자극제 신호기를 던집니다. 신호기가 떨어진 곳에는 플레이어에게 속사 효과를 부여하는 영역이 생성됩니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/da2d65e4abc2129e284cf5248fd70925f093a0b3.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "궤도 일격", 
+                description: "전술 지도를 장착합니다. 발사하면 선택한 위치에 궤도 일격 레이저를 쏘아 해당 영역에 있는 플레이어에게 큰 지속 피해를 입힙니다.",
+                 video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/ccd8e6c574b7017a2681e5d37c744f5a654327e3.mp4?accountingTag=VAL"     
+            }
+        ]
+    },
+            {
+                id: 5,
+                name: "VIPER",
+                role: "controller",
+                icon: "🐍",
+                image: "/images/viper.png",
+                description: "독의 화학자. 맹독으로 전장을 지배합니다.",
+                bio: "미국 출신의 화학자 Viper는 맹독 가스로 적을 제압합니다. 그녀의 독은 적의 시야와 체력을 동시에 깎아냅니다.",
+                abilities: [
+            { 
+                name: "독성 연기", 
+                description: "가스 방사기를 장착합니다. 발사 시 라운드 내내 유지되는 방사기를 던집니다. 스킬을 재사용하면 연료를 소모해 독성 가스 구름을 만듭니다. 이 스킬은 라운드 시작 전에 회수하여 다시 설치할 수 있으며 라운드 내내 여러 번 재사용이 가능합니다.",
+                
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/49ff8efd75b76941da3018362061275d3a1d43d6.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "독성 장막", 
+                description: "가스 방사기 발사기를 장착합니다. 발사하면 여러 개의 가스 방사기를 일렬로 길게 배치합니다. 스킬을 다시 사용하면 연료를 소모해 높은 독성 연기 장벽을 생성합니다. 이 스킬은 여러 번 재사용이 가능합니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/36db8f44946850c2a20aba43d8ad3ecd977c7d7e.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "뱀 이빨", 
+                description: "화학 물질 발사기를 장착합니다. 발사하면 바닥에 떨어졌을 때 폭발하는 통을 날립니다. 통은 폭발하며 적에게 피해를 입히고 둔화시키는 화학 물질 지역을 일정 시간 동안 생성합니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/9eeb3090efed080792e6ea2f264fd60ebb12694e.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "독사의 구덩이", 
+                description: "화학 물질 분사기를 장착합니다. 발사하면 사방으로 화학 물질 연기를 분사해 안에 있는 플레이어의 가시거리와 최대 체력을 감소시키는 거대 연기를 생성합니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/4601fd972c588a79cdd910b2497546f156886c40.mp4?accountingTag=VAL"
+            }
+        ]
+    },
+            {
+                id: 6,
+                name: "SOVA",
+                role: "initiator",
+                icon: "🏹",
+                image: "/images/sova.png",
+                description: "러시아의 사냥꾼. 정찰의 달인.",
+                bio: "러시아 출신의 Sova는 정찰 화살과 드론으로 적의 위치를 파악하는 전문가입니다. 그의 정보는 팀에게 전술적 우위를 제공합니다.",
+                   abilities: [
+            { 
+                name: "충격 화살", 
+                description: "충격 화살과 활을 장착합니다. 발사하면 충돌 시 폭발해 주변 플레이어에게 피해를 입히는 화살을 전방에 쏩니다. 발사를 길게 누르면 화살의 사거리가 늘어납니다. 보조 공격 시 화살이 최대 두 번 더 튕깁니다.",
+                
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/7776fa677e90c72da94ec7d188d2d4618116c41b.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "정찰용 화살", 
+                description: "정찰 화살과 활을 장착합니다. 발사하면 정찰 화살을 전방에 쏘아 화살이 꽂힌 곳을 기준으로 모습이 드러난 주변 적의 위치를 표시합니다. 적이 이 화살을 파괴할 수 있습니다. 발사를 길게 누르면 화살의 사거리가 늘어납니다. 보조 공격 시 화살이 최대 두 번 더 튕깁니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/50f9d870fa2a9b9ba38408eb718ffc06879c11a8.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "올빼미 드론", 
+                description: "올빼미 드론을 장착합니다. 발사하면 드론을 날려 조종합니다. 드론을 조종하는 동안 발사를 누르면 표식용 다트가 발사됩니다. 다트에 맞은 플레이어는 위치가 드러납니다. 적이 올빼미 드론을 파괴할 수 있습니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/6c6f036376c18ddf4ed0c589b506b8889d86a29a.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "사냥꾼의 분노", 
+                description: "벽을 관통하는 에너지 3개를 장거리로 발사하는 활을 장착합니다. 발사하면 전방에 일직선상으로 에너지를 날려 닿은 적에게 피해를 입히고 위치를 드러냅니다. 스킬 지속시간이 활성화된 상태에서 최대 두 번 더 다시 사용할 수 있습니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/df9ce34c3d2a7f527929cac123501e1473e0da0e.mp4?accountingTag=VAL"
+            }
+        ]
+    },
+            {
+                id: 7,
+                name: "CYPHER",
+                role: "sentinel",
+                icon: "📷",
+                image: "/images/cypher.png",
+                description: "모로코의 정보원. 모든 것을 감시합니다.",
+                bio: "모로코 출신의 정보 전문가 Cypher는 카메라와 트랩으로 적의 모든 움직임을 감시합니다. 그에게 숨을 곳은 없습니다.",
+                   abilities: [
+            { 
+                name: "사이버 감옥", 
+                description: "사이버 감옥을 장착합니다. 발사하면 사이퍼 앞에 사이버 감옥을 던집니다. 활성화하면 시야를 차단하고 지나가는 적을 둔화시키는 구역이 생성됩니다.",
+                
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/54a8dfaa9b82c7aaf994b0432bb25ef1e95c985c.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "스파이캠", 
+                description: "스파이캠을 장착합니다. 발사하면 지정 위치에 스파이캠을 설치합니다. 스킬을 재사용하면 카메라를 조작할 수 있습니다. 조작하는 동안 발사를 누르면 표식용 다트가 발사되며 다트에 맞은 플레이어는 위치가 드러납니다. 이 스킬은 회수하여 다시 설치할 수 있습니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/825ba0643c74ad583350d1eb562bb7650ad78ae0.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "함정", 
+                description: "함정을 장착합니다. 발사하면 지정 위치에 파괴 가능한 위장 함정을 설치하여 설치 위치와 반대쪽 벽 사이를 연결하는 선을 생성합니다. 함정을 넘어가는 적 플레이어는 제때 장치를 파괴하지 않으면 잠시 후 속박되어 위치가 드러나며 멍해집니다. 이 스킬은 회수하여 다시 설치할 수 있습니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/aab21b75eb43f0e8cc9c0b816cb4877ae868b9fd.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "신경 절도", 
+                description: "적 플레이어가 처치된 즉시 조준한 후 사용하면 생존한 모든 적 플레이어의 위치가 드러납니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/ddeaad5ff2e4865351755b71fdc4fc97339fb334.mp4?accountingTag=VAL"
+            }
+        ]
+    },
+            {
+                id: 8,
+                name: "REYNA",
+                role: "duelist",
+                icon: "👁️",
+                image: "/images/reyna.png",
+                description: "멕시코의 뱀파이어. 적을 잡아먹고 강해집니다.",
+                bio: "멕시코 출신의 Reyna는 적을 처치할수록 강해지는 능력을 가졌습니다. 그녀의 공격성과 자급자족 능력은 독보적입니다.",
+                   abilities: [
+            { 
+                name: "포식", 
+                description: "레이나가 처치한 적은 3초 동안 유지되는 영혼 구슬을 남깁니다. 레이나는 즉시 근처에 있는 영혼 구슬을 흡수하여 짧은 시간 동안 순식간에 체력을 회복합니다. 이 스킬로 회복한 체력이 100을 넘어가면 초과분은 시간이 흐르면서 사라집니다. 여제가 활성화되면 이 스킬이 자동으로 사용되며 구슬을 흡수하지 않습니다.",
+                
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/327ccef09ef3c84a92320593c5db1bcb4b37e1e7.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "무시", 
+                description: "즉시 근처에 있는 영혼 구슬을 흡수하여 짧은 시간 동안 무형 상태가 됩니다. 여제 활성화 시 추가로 투명 상태가 됩니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/6a7db5a37dd8e6e6671699ff30ad297cf1f2eeda.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "눈총", 
+                description: "파괴 가능한 천상의 눈을 장착합니다. 활성화하면 눈을 짧게 앞으로 던집니다. 눈을 본 적은 모두 시야가 제한됩니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/01030fba2df618b91c6185bb076f54e8c6c40415.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "여제", 
+                description: "즉시 광란 상태가 되어 사격, 장착, 재장전 속도가 크게 증가합니다. 적을 처치하면 지속시간이 초기화됩니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/d777e81e035db1430b1fbf664a432163deed5afb.mp4?accountingTag=VAL"
+            }
+        ]
+    },
+            {
+                id: 9,
+                name: "KILLJOY",
+                role: "sentinel",
+                icon: "🤖",
+                image: "/images/killjoy.png",
+                description: "독일의 천재 발명가. 로봇으로 전장을 지배합니다.",
+                bio: "독일 출신의 천재 발명가 Killjoy는 다양한 가젯으로 지역을 장악합니다. 그녀의 터렛과 나노봇은 적에게 악몽입니다.",
+                  abilities: [
+            { 
+                name: "알람봇", 
+                description: "잠복 알람봇을 장착합니다. 발사하면 사거리 내에 들어온 적을 추적하는 봇을 배치합니다. 대상에 도달하면 봇은 폭발하여 적을 취약 상태로 만들고 피해를 입힙니다. 장착을 길게 누르면 배치된 봇을 회수합니다.",
+                
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/0582e7e1a0733667614492129abef67e17cfc92c.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "포탑", 
+                description: "포탑을 장착합니다. 발사하면 전방 180도 원뿔형 범위 안에 들어온 적을 공격하는 포탑을 배치합니다. 장착을 길게 누르면 배치된 포탑을 회수합니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/007e5042385d6f7315f4b4cb3fbd3b2c71b530c1.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "나노스웜", 
+                description: "나노스웜 수류탄을 장착합니다. 발사하면 수류탄을 투척합니다. 수류탄은 지면에 닿으면 잠복 상태가 됩니다. 수류탄을 활성화하면 적에게 피해를 입히는 나노스웜을 발사합니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/b47a0b24d2499935d28f845a067984a52dbc2542.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "봉쇄", 
+                description: "봉쇄 장치를 장착합니다. 발사하면 장치를 배치합니다. 대기시간이 지나면 범위 내 탐지된 모든 적을 구속합니다. 봉쇄 장치는 적에 의해 파괴될 수 있습니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/9485f7bbf04841f4c37e031f07dad03e9cbc1bf9.mp4?accountingTag=VAL"
+            }
+        ]
+    },
+            {
+                id: 10,
+                name: "BREACH",
+                role: "initiator",
+                icon: "💪",
+                image: "/images/breach.png",
+                description: "스웨덴의 바이오닉 전사. 벽을 뚫는 충격파.",
+                bio: "스웨덴 출신의 Breach는 강력한 바이오닉 팔로 벽을 관통하는 충격파를 발사합니다. 그의 능력은 숨은 적을 무력화시킵니다.",
+                   abilities: [
+            { 
+                name: "섬광 폭발", 
+                description: "실명탄을 장착합니다. 발사하면 벽을 통과하고 빠르게 효과가 발생하는 폭발을 일으켜 섬광을 본 모든 플레이어를 실명시킵니다.",
+                
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/ffa4695b83e2f959bc59f0393dfc74e533546a89.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "균열", 
+                description: "지진파를 장착합니다. 발사를 길게 누르면 사거리가 늘어납니다. 키를 떼면 지진파를 날려 경로상에 있는 적과 대상 범위 내의 모든 적을 멍하게 합니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/a4f24e1fe60879234be5da0f8a768feb8f379fdd.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "여진", 
+                description: "융합 에너지탄을 장착합니다. 발사하면 벽을 통과하고 느리게 효과가 발생하는 폭발을 일으켜 대상 범위 내의 모든 적에게 큰 피해를 입힙니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/592212ab60d09999d493c2099f9260d59fab917a.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "지진 강타", 
+                description: "지진탄을 장착합니다. 발사하면 모든 지형을 통과하는 지진 파동을 날려 경로상에 있는 모든 적을 멍하게 하고 공중으로 띄웁니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/207b0ab21f8e27e98ca22f4b5546cc0963d94af6.mp4?accountingTag=VAL"
+            }
+        ]
+    },
+            {
+                id: 11,
+                name: "OMEN",
+                role: "controller",
+                icon: "👻",
+                image: "/images/omen.png",
+                description: "그림자의 존재. 순간이동의 대가.",
+                bio: "정체불명의 Omen은 어둠을 조종하며 텔레포트로 적을 혼란에 빠뜨립니다. 그의 존재는 공포 그 자체입니다.",
+                   abilities: [
+            { 
+                name: "피해망상", 
+                description: "즉시 앞으로 그림자 투사체를 발사해 투사체에 닿은 모든 플레이어의 가시거리를 잠시 감소시킵니다. 이 투사체는 벽을 통과할 수 있습니다.",
+                
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/f401fc788f3182b6d5aa25af6056c842117b1b36.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "어둠의 장막", 
+                description: "그림자 구슬을 장착하고 다른 차원의 세계로 들어가 구슬을 조준합니다. 스킬 키를 누르면 표시한 위치에 그림자 구슬을 던져 한동안 시야를 차단하는 그림자 영역을 생성합니다. 발사를 길게 누르면 표시 위치를 더 멀리 옮깁니다. 보조 공격을 길게 누르면 표시 위치를 더 가까이 옮깁니다. 재장전을 누르면 기본 조준점을 끄고 켭니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/ba0b035a5ff2bb8d9487ba461b3d15900ff50f6b.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "어둠의 발자국", 
+                description: "그림자 걸음 스킬을 장착하고 사거리를 표시합니다. 발사하면 짧은 정신 집중 후 표시한 위치로 순간 이동합니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/33550fee410c5a55ea8832f41827a12aaddb686f.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "그림자 습격", 
+                description: "전술 지도를 장착합니다. 발사하면 선택한 위치로 순간 이동을 시작합니다. 순간 이동 중에는 오멘이 그림자로 나타나며 이때 적이 그림자를 파괴하면 순간 이동이 취소됩니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/252cf8ad86b6aca6210ba93ea856f52708476eba.mp4?accountingTag=VAL"
+            }
+        ]
+    },
+            {
+                id: 12,
+                name: "RAZE",
+                role: "duelist",
+                icon: "💣",
+                image: "/images/raze.png",
+                description: "브라질의 폭파 전문가. 폭발이 예술입니다.",
+                bio: "브라질 출신의 Raze는 폭발물로 적과 구조물을 파괴하는 것을 즐깁니다. 그녀의 과격한 스타일은 전장을 쑥대밭으로 만듭니다.",
+                   abilities: [
+            { 
+                name: "폭발 팩", 
+                description: "표면에 부착되는 폭발 팩을 던집니다. 부착 후 다시 사용하면 팩이 폭발하며 적중한 대상에게 피해를 입히고 밀어냅니다. 레이즈는 이 스킬로 인한 피해를 입지 않지만 멀리 날아갈 경우 추락 피해는 입을 수 있습니다.",
+                
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/82028c5e9ae38b59660dbf9f57f341f1c20c5480.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "페인트탄", 
+                description: "집속탄을 장착합니다. 발사하면 집속탄을 던집니다. 집속탄은 피해를 입히고 여러 개의 자탄을 퍼뜨립니다. 자탄은 각각의 범위 내에 있는 모든 대상에게 피해를 입힙니다. 보조 공격 시 높이 던집니다. 페인트탄 충전량은 2킬마다 초기화됩니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/d75fd65435a84906bb3e8ad0b97c505e7359697b.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "폭발 봇", 
+                description: "폭발 봇을 장착합니다. 발사하면 폭발 봇이 지면에서 일직선으로 이동하며 벽을 만나면 튕겨 나옵니다. 폭발 봇의 정면 원뿔형 시야 안에 적이 포착되면 해당 적에게 돌진하며 폭발해 치명적인 피해를 입힙니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/c824fe8e08a4f36be2273aa456819d2c2b6cd6b0.mp4?accountingTag=VAL"
+            },
+            { 
+                name: "대미 장식", 
+                description: "로켓 발사기를 장착합니다. 발사하면 충돌 시 대량의 범위 피해를 입히는 로켓을 발사합니다.",
+                video: "https://cmsassets.rgpub.io/sanity/files/dsfx7636/game_data/7281a34566f12d202dee3d43e0fa0bf0b4271d60.mp4?accountingTag=VAL"
+            }
+        ]
+    },
+        ];
+
+        // Render Agents
+        function renderAgents(filterRole = 'all') {
+            const grid = document.getElementById('agentsGrid');
+            const filteredAgents = filterRole === 'all' 
+                ? agents 
+                : agents.filter(agent => agent.role === filterRole);
+
+            grid.innerHTML = filteredAgents.map(agent => `
+                <div class="agent-card" onclick="openModal(${agent.id})" data-role="${agent.role}">
+                    <div class="agent-image" data-image="${agent.image || ''}">
+                        ${agent.icon}
+                    </div>
+                    <div class="agent-info">
+                        <div class="agent-role">${getRoleLabel(agent.role)}</div>
+                        <h3 class="agent-name">${agent.name}</h3>
+                        <p class="agent-description">${agent.description}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // 각 요원 이미지에 배경 적용
+            document.querySelectorAll('.agent-image[data-image]').forEach(element => {
+                const imageUrl = element.getAttribute('data-image');
+                if (imageUrl) {
+                    element.style.setProperty('--agent-image', `url('${imageUrl}')`);
+                }
+            });
+        }
+
+function getRoleLabel(role) {
+    const labels = {
+        duelist: '<img src="../images/roles/duelist.png" class="role-icon"> DUELIST',
+        controller: '<img src="../images/roles/controller.png" class="role-icon"> CONTROLLER',
+        sentinel: '<img src="../images/roles/sentinel.png" class="role-icon"> SENTINEL',
+        initiator: '<img src="../images/roles/initiator.png" class="role-icon"> INITIATOR'
+    };
+    return labels[role] || role;
+}
+
+        function openModal(agentId) {
+    const agent = agents.find(a => a.id === agentId);
+    if (!agent) return;
+
+    const modal = document.getElementById('agentModal');
+    const content = document.getElementById('modalContent');
+
+    // 1. HTML 구조 생성 (비디오 래퍼 추가)
+    content.innerHTML = `
+        <h2 class="modal-agent-name">${agent.name}</h2>
+        <div class="modal-agent-role">${getRoleLabel(agent.role)}</div>
+        <p class="modal-agent-bio">${agent.bio}</p>
+        <div class="abilities-section">
+            <h3 class="abilities-title">ABILITIES</h3>
+            ${agent.abilities.map(ability => `
+                <div class="ability">
+                    <div class="ability-name">${ability.name}</div>
+                    <div class="ability-description">${ability.description}</div>
+                    
+                    ${ability.video ? `
+                    <div class="ability-video-wrapper">
+                        <video class="ability-video" loop muted playsinline>
+                            <source src="${ability.video}" type="video/mp4">
+                        </video>
+                    </div>
+                    ` : ''}
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // 2. 호버 이벤트 리스너 추가 (자동 재생 기능)
+    const abilityCards = content.querySelectorAll('.ability');
+    
+    abilityCards.forEach(card => {
+        const video = card.querySelector('video');
+        
+        if (video) {
+            // 마우스 올리면 재생
+            card.addEventListener('mouseenter', () => {
+                video.currentTime = 0; // 처음부터 재생
+                video.play().catch(e => console.log("Auto-play prevented")); 
+            });
+
+            // 마우스 떼면 일시정지
+            card.addEventListener('mouseleave', () => {
+                video.pause();
+            });
+        }
+    });
+}
+
+        function closeModal() {
+            const modal = document.getElementById('agentModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Role Filter
+        document.querySelectorAll('.role-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderAgents(btn.dataset.role);
+            });
+        });
+
+        // Close modal on outside click
+        document.getElementById('agentModal').addEventListener('click', (e) => {
+            if (e.target.id === 'agentModal') {
+                closeModal();
+            }
+        });
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Initial render
+        renderAgents();
+    </script>
+</body>
+</html>

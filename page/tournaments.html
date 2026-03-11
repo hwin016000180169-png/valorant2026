@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALORANT TOURNAMENTS - 대회 정보</title>
+    <style>
+        :root {
+            --color-primary: #FF4655;
+            --color-secondary: #0F1923;
+            --color-accent: #53E9FF;
+            --color-gold: #FFD700;
+            --color-dark: #0A0E12;
+            --color-light: #ECF0F1;
+            
+            --font-display: 'Druk Wide', 'Impact', sans-serif;
+            --font-body: 'DIN Next', 'Helvetica Neue', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-dark);
+            color: var(--color-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--color-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-primary);
+            border-radius: 4px;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: rgba(10, 14, 18, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 70, 85, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--color-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--color-light);
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            padding: 0.5rem 1rem;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        .nav-links a.active {
+            color: var(--color-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-primary);
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Header */
+        .page-header {
+            margin-top: 80px;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(255, 215, 0, 0.1) 0%, transparent 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.2) 0%, transparent 50%);
+            animation: championGlow 6s ease-in-out infinite;
+        }
+
+        @keyframes championGlow {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            color: var(--color-light);
+            text-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--color-gold);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        /* Timeline Container */
+        .timeline-container {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, 
+                var(--color-primary) 0%, 
+                var(--color-accent) 50%, 
+                var(--color-gold) 100%);
+            transform: translateX(-50%);
+        }
+
+        .timeline-line::before {
+            content: '🏆';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            animation: trophySpin 4s linear infinite;
+        }
+
+        @keyframes trophySpin {
+            0%, 100% { transform: translateX(-50%) rotate(0deg) scale(1); }
+            50% { transform: translateX(-50%) rotate(180deg) scale(1.2); }
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 4rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: calc(50% - 4rem);
+            background: linear-gradient(135deg, rgba(15, 25, 35, 0.8) 0%, rgba(10, 14, 18, 0.9) 100%);
+            border: 2px solid rgba(255, 70, 85, 0.3);
+            padding: 2rem;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: 4rem;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 4rem;
+        }
+
+        .timeline-content:hover {
+            border-color: var(--color-primary);
+            transform: scale(1.05);
+            box-shadow: 0 20px 60px rgba(255, 70, 85, 0.3);
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30px;
+            height: 30px;
+            background: var(--color-primary);
+            border: 4px solid var(--color-dark);
+            border-radius: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            right: -49px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: -49px;
+        }
+
+        .tournament-date {
+            font-size: 0.85rem;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .tournament-name {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+            color: var(--color-light);
+        }
+
+        .tournament-location {
+            font-size: 1rem;
+            color: rgba(236, 240, 241, 0.7);
+            margin-bottom: 1rem;
+        }
+
+        .tournament-description {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(236, 240, 241, 0.8);
+            margin-bottom: 1.5rem;
+        }
+
+        .tournament-prize {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
+            border: 2px solid var(--color-gold);
+            color: var(--color-gold);
+            padding: 0.5rem 1rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .champion-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, rgba(255, 70, 85, 0.2), rgba(83, 233, 255, 0.2));
+            border: 1px solid var(--color-primary);
+            padding: 0.5rem 1rem;
+            margin-top: 1rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        /* Upcoming Section */
+        .upcoming-section {
+            max-width: 1400px;
+            margin: 6rem auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--color-light);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+            margin: 1rem auto 0;
+        }
+
+        .upcoming-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .upcoming-card {
+            background: linear-gradient(135deg, rgba(15, 25, 35, 0.8) 0%, rgba(10, 14, 18, 0.9) 100%);
+            border: 2px solid rgba(83, 233, 255, 0.3);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s;
+        }
+
+        .upcoming-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(83, 233, 255, 0.1), transparent);
+            opacity: 0;
+            transition: 0.4s;
+        }
+
+        .upcoming-card:hover::before {
+            opacity: 1;
+        }
+
+        .upcoming-card:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(83, 233, 255, 0.3);
+        }
+
+        .upcoming-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--color-accent);
+            color: var(--color-dark);
+            padding: 0.3rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .upcoming-date {
+            font-size: 2rem;
+            font-family: var(--font-display);
+            font-weight: 900;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+        }
+
+        .upcoming-name {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .upcoming-location {
+            color: rgba(236, 240, 241, 0.7);
+            margin-bottom: 1rem;
+        }
+
+        .upcoming-teams {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .team-chip {
+            background: rgba(255, 70, 85, 0.1);
+            border: 1px solid rgba(255, 70, 85, 0.3);
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            color: var(--color-light);
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(15, 25, 35, 0.5);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 70, 85, 0.2);
+            margin-top: 4rem;
+        }
+
+        .footer-text {
+            color: rgba(236, 240, 241, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .timeline-line {
+                left: 30px;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                flex-direction: row;
+            }
+
+            .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                width: calc(100% - 80px);
+                margin-left: 80px;
+                margin-right: 0;
+            }
+
+            .timeline-content::before,
+            .timeline-item:nth-child(even) .timeline-content::before {
+                left: -49px;
+                right: auto;
+            }
+
+            .upcoming-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="/index.html" class="logo">VALORANT</a>
+            <ul class="nav-links">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="agents.html">AGENTS</a></li>
+                <li><a href="maps.html">MAPS</a></li>
+                <li><a href="tournaments.html" class="active">TOURNAMENTS</a></li>
+                <li><a href="gallery.html">GALLERY</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="page-header">
+        <h1 class="page-title">TOURNAMENTS</h1>
+        <p class="page-subtitle">Path to Champions</p>
+    </header>
+
+    <!-- Timeline -->
+    <div class="timeline-container">
+        <div class="timeline-line"></div>
+
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="tournament-date">🏆 2024</div>
+                <h2 class="tournament-name">VCT CHAMPIONS</h2>
+                <div class="tournament-location">📍 Seoul, South Korea</div>
+                <p class="tournament-description">
+                    2024년 VALORANT 챔피언스 투어의 정점. 세계 최고의 팀들이 
+                    궁극의 영광을 위해 서울에서 격돌했습니다. 역대 최고 수준의 
+                    경기와 드라마틱한 순간들이 펼쳐졌습니다.
+                </p>
+                <div class="tournament-prize">💰 $2,250,000</div>
+                <div class="champion-badge">
+                    👑 Champion: SENTINELS
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="tournament-date">🌟 2024</div>
+                <h2 class="tournament-name">VCT MASTERS MADRID</h2>
+                <div class="tournament-location">📍 Madrid, Spain</div>
+                <p class="tournament-description">
+                    열정의 나라 스페인 마드리드에서 개최된 마스터스 대회. 
+                    유럽, 아메리카, 아시아의 정상급 팀들이 치열한 접전을 
+                    펼쳤으며, 예상을 뒤엎는 결과가 나왔습니다.
+                </p>
+                <div class="tournament-prize">💰 $1,000,000</div>
+                <div class="champion-badge">
+                    👑 Champion: FNATIC
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="tournament-date">⚡ 2024</div>
+                <h2 class="tournament-name">VCT MASTERS SHANGHAI</h2>
+                <div class="tournament-location">📍 Shanghai, China</div>
+                <p class="tournament-description">
+                    중국 상하이에서 열린 시즌 첫 국제 대회. 신예 팀들의 
+                    약진과 기존 강호들의 저력이 맞붙으며 흥미진진한 
+                    경기가 이어졌습니다.
+                </p>
+                <div class="tournament-prize">💰 $1,000,000</div>
+                <div class="champion-badge">
+                    👑 Champion: PAPER REX
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="tournament-date">🔥 2023</div>
+                <h2 class="tournament-name">VCT CHAMPIONS LOS ANGELES</h2>
+                <div class="tournament-location">📍 Los Angeles, USA</div>
+                <p class="tournament-description">
+                    LA의 뜨거운 열기 속에서 펼쳐진 2023 챔피언스. 
+                    전 세계 최정상 16개 팀이 모여 역대급 명승부를 
+                    만들어냈습니다.
+                </p>
+                <div class="tournament-prize">💰 $2,250,000</div>
+                <div class="champion-badge">
+                    👑 Champion: EVIL GENIUSES
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="tournament-date">💎 2023</div>
+                <h2 class="tournament-name">VCT LOCK//IN SÃO PAULO</h2>
+                <div class="tournament-location">📍 São Paulo, Brazil</div>
+                <p class="tournament-description">
+                    시즌 킥오프 토너먼트로 브라질에서 개최. 
+                    전 세계 30개 팀이 참가한 사상 최대 규모의 대회였으며, 
+                    새로운 메타의 시작을 알렸습니다.
+                </p>
+                <div class="tournament-prize">💰 $500,000</div>
+                <div class="champion-badge">
+                    👑 Champion: FNATIC
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upcoming Section -->
+    <section class="upcoming-section">
+        <h2 class="section-title">UPCOMING TOURNAMENTS</h2>
+        <div class="upcoming-grid">
+            <div class="upcoming-card">
+                <span class="upcoming-badge">SOON</span>
+                <div class="upcoming-date">MAR 2026</div>
+                <h3 class="upcoming-name">VCT KICKOFF TOURNAMENT</h3>
+                <div class="upcoming-location">📍 Tokyo, Japan</div>
+                <p class="tournament-description">
+                    2026 시즌의 화려한 시작. 일본 도쿄에서 새로운 
+                    전설이 시작됩니다.
+                </p>
+                <div class="upcoming-teams">
+                    <span class="team-chip">DRX</span>
+                    <span class="team-chip">T1</span>
+                    <span class="team-chip">GENG</span>
+                    <span class="team-chip">PRX</span>
+                    <span class="team-chip">+8 MORE</span>
+                </div>
+            </div>
+
+            <div class="upcoming-card">
+                <span class="upcoming-badge">SOON</span>
+                <div class="upcoming-date">JUN 2026</div>
+                <h3 class="upcoming-name">VCT MASTERS BANGKOK</h3>
+                <div class="upcoming-location">📍 Bangkok, Thailand</div>
+                <p class="tournament-description">
+                    동남아시아 최초 개최. 태국 방콕에서 아시아의 
+                    저력을 확인하세요.
+                </p>
+                <div class="upcoming-teams">
+                    <span class="team-chip">TBD</span>
+                </div>
+            </div>
+
+            <div class="upcoming-card">
+                <span class="upcoming-badge">SOON</span>
+                <div class="upcoming-date">AUG 2026</div>
+                <h3 class="upcoming-name">VCT CHAMPIONS</h3>
+                <div class="upcoming-location">📍 Paris, France</div>
+                <p class="tournament-description">
+                    2026 시즌의 대미를 장식할 파리 챔피언스. 
+                    누가 새로운 왕좌에 오를 것인가?
+                </p>
+                <div class="tournament-prize">💰 $3,000,000</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">
+            © 2026 VALORANT ESPORTS. All rights reserved.<br>
+            2026 KIMDONGHWI PORTFOLIO
+        </p>
+    </footer>
+
+    <script>
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateX(0) scale(1)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.timeline-content').forEach((content, index) => {
+            content.style.opacity = '0';
+            if (index % 2 === 0) {
+                content.style.transform = 'translateX(-50px) scale(0.9)';
+            } else {
+                content.style.transform = 'translateX(50px) scale(0.9)';
+            }
+            content.style.transition = 'all 0.6s ease';
+            observer.observe(content);
+        });
+
+        document.querySelectorAll('.upcoming-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALORANT MAPS - 전장 소개</title>
+    <style>
+        :root {
+            --color-primary: #FF4655;
+            --color-secondary: #0F1923;
+            --color-accent: #53E9FF;
+            --color-gold: #FFD700;
+            --color-dark: #0A0E12;
+            --color-light: #ECF0F1;
+            
+            --font-display: 'Druk Wide', 'Impact', sans-serif;
+            --font-body: 'DIN Next', 'Helvetica Neue', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-dark);
+            color: var(--color-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--color-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-primary);
+            border-radius: 4px;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: rgba(10, 14, 18, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 70, 85, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--color-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--color-light);
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            padding: 0.5rem 1rem;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        .nav-links a.active {
+            color: var(--color-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-primary);
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Header */
+        .page-header {
+            margin-top: 80px;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(83, 233, 255, 0.1) 0%, transparent 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 50%, rgba(83, 233, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(255, 70, 85, 0.15) 0%, transparent 50%);
+            animation: headerPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes headerPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            color: var(--color-light);
+            text-shadow: 0 0 40px rgba(83, 233, 255, 0.5);
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        /* Maps Container */
+        .maps-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Map Card */
+        .map-card {
+            margin-bottom: 6rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(15, 25, 35, 0.6) 0%, rgba(10, 14, 18, 0.8) 100%);
+            border: 2px solid rgba(255, 70, 85, 0.3);
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .map-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 70, 85, 0.1), transparent);
+            transition: 0.8s;
+        }
+
+        .map-card:hover::before {
+            left: 100%;
+        }
+
+        .map-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(255, 70, 85, 0.2);
+        }
+
+        .map-card:nth-child(even) {
+            grid-template-columns: 1fr 1fr;
+            direction: rtl;
+        }
+
+        .map-card:nth-child(even) > * {
+            direction: ltr;
+        }
+
+        .map-visual {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #FF4655 0%, #53E9FF 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid rgba(255, 70, 85, 0.5);
+        }
+
+        .map-visual::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(255, 255, 255, 0.05) 10px,
+                    rgba(255, 255, 255, 0.05) 20px
+                );
+            animation: patternMove 20s linear infinite;
+        }
+
+        @keyframes patternMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(40px, 40px); }
+        }
+
+        .map-icon {
+            font-size: 8rem;
+            z-index: 1;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .map-info {
+            padding: 1rem;
+        }
+
+        .map-location {
+            font-size: 0.9rem;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .map-name {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+            color: var(--color-light);
+            line-height: 1;
+        }
+
+        .map-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(236, 240, 241, 0.8);
+            margin-bottom: 2rem;
+        }
+
+        .map-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 70, 85, 0.1);
+            border: 1px solid rgba(255, 70, 85, 0.3);
+            transition: 0.3s;
+        }
+
+        .stat:hover {
+            background: rgba(255, 70, 85, 0.2);
+            border-color: var(--color-primary);
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--color-primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-accent);
+            margin-top: 0.5rem;
+        }
+
+        .map-features {
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .feature-tag {
+            background: linear-gradient(135deg, rgba(255, 70, 85, 0.2), rgba(83, 233, 255, 0.2));
+            border: 1px solid var(--color-accent);
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            color: var(--color-accent);
+            transition: 0.3s;
+        }
+
+        .feature-tag:hover {
+            background: linear-gradient(135deg, rgba(255, 70, 85, 0.4), rgba(83, 233, 255, 0.4));
+            transform: scale(1.1);
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(15, 25, 35, 0.5);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 70, 85, 0.2);
+            margin-top: 4rem;
+        }
+
+        .footer-text {
+            color: rgba(236, 240, 241, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .map-card {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .map-card:nth-child(even) {
+                grid-template-columns: 1fr;
+                direction: ltr;
+            }
+
+            .map-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .map-visual {
+                height: 300px;
+            }
+
+            .map-icon {
+                font-size: 5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="index.html" class="logo">VALORANT</a>
+            <ul class="nav-links">
+                <li><a href="/index.html">HOME</a></li>
+                <li><a href="agents.html">AGENTS</a></li>
+                <li><a href="maps.html" class="active">MAPS</a></li>
+                <li><a href="tournaments.html">TOURNAMENTS</a></li>
+                <li><a href="gallery.html">GALLERY</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="page-header">
+        <h1 class="page-title">MAPS</h1>
+        <p class="page-subtitle">Battlegrounds of Victory</p>
+    </header>
+
+    <!-- Maps Container -->
+    <div class="maps-container">
+        <div class="map-card">
+            <div class="map-visual">
+                <div class="map-icon">🏛️</div>
+            </div>
+            <div class="map-info">
+                <div class="map-location">🇮🇹 ITALY</div>
+                <h2 class="map-name">ASCENT</h2>
+                <p class="map-description">
+                    이탈리아 베니스를 배경으로 한 맵입니다. 중앙의 넓은 미드와 양쪽의 사이트가 특징이며, 
+                    문을 열고 닫을 수 있는 독특한 구조를 가지고 있습니다. 전통적인 플레이 스타일을 
+                    선호하는 플레이어들에게 최적화되어 있습니다.
+                </p>
+                <div class="map-stats">
+                    <div class="stat">
+                        <span class="stat-value">2</span>
+                        <span class="stat-label">Sites</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">★★★</span>
+                        <span class="stat-label">Complexity</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">MID</span>
+                        <span class="stat-label">Control</span>
+                    </div>
+                </div>
+                <div class="map-features">
+                    <span class="feature-tag">🚪 MECHANICAL DOORS</span>
+                    <span class="feature-tag">🎯 MID CONTROL</span>
+                    <span class="feature-tag">⚔️ LONG RANGE</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-card">
+            <div class="map-visual">
+                <div class="map-icon">🏜️</div>
+            </div>
+            <div class="map-info">
+                <div class="map-location">🇲🇦 MOROCCO</div>
+                <h2 class="map-name">BIND</h2>
+                <p class="map-description">
+                    모로코를 배경으로 한 맵으로, 가장 독특한 특징은 미드가 없다는 것입니다. 
+                    대신 두 개의 텔레포터가 맵의 양쪽을 연결하여 빠른 로테이션과 
+                    예측 불가능한 플레이를 가능하게 합니다. 
+                </p>
+                <div class="map-stats">
+                    <div class="stat">
+                        <span class="stat-value">2</span>
+                        <span class="stat-label">Sites</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">★★★★</span>
+                        <span class="stat-label">Complexity</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">TELE</span>
+                        <span class="stat-label">Rotation</span>
+                    </div>
+                </div>
+                <div class="map-features">
+                    <span class="feature-tag">🌀 TELEPORTERS</span>
+                    <span class="feature-tag">⚡ NO MID</span>
+                    <span class="feature-tag">🎲 UNPREDICTABLE</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-card">
+            <div class="map-visual">
+                <div class="map-icon">⛩️</div>
+            </div>
+            <div class="map-info">
+                <div class="map-location">🇯🇵 JAPAN</div>
+                <h2 class="map-name">SPLIT</h2>
+                <p class="map-description">
+                    일본 도쿄를 배경으로 한 수직적 맵입니다. 여러 층으로 나뉜 구조와 
+                    로프를 이용한 수직 이동이 특징입니다. 좁은 통로와 다양한 각도의 
+                    교전이 많아 팀워크가 매우 중요한 맵입니다.
+                </p>
+                <div class="map-stats">
+                    <div class="stat">
+                        <span class="stat-value">2</span>
+                        <span class="stat-label">Sites</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">★★★★★</span>
+                        <span class="stat-label">Complexity</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">VERT</span>
+                        <span class="stat-label">Layout</span>
+                    </div>
+                </div>
+                <div class="map-features">
+                    <span class="feature-tag">⬆️ VERTICAL PLAY</span>
+                    <span class="feature-tag">🪢 ROPES</span>
+                    <span class="feature-tag">🏗️ MULTI-LEVEL</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-card">
+            <div class="map-visual">
+                <div class="map-icon">❄️</div>
+            </div>
+            <div class="map-info">
+                <div class="map-location">🇷🇺 RUSSIA</div>
+                <h2 class="map-name">ICEBOX</h2>
+                <p class="map-description">
+                    러시아의 극지 연구 시설을 배경으로 한 맵입니다. 극도로 수직적인 구조와 
+                    집라인을 통한 빠른 이동이 특징입니다. 
+                    추운 환경과 복잡한 구조 때문에 가장 도전적인 맵 중 하나입니다.
+                </p>
+                <div class="map-stats">
+                    <div class="stat">
+                        <span class="stat-value">2</span>
+                        <span class="stat-label">Sites</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">★★★★★</span>
+                        <span class="stat-label">Complexity</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">ZIP</span>
+                        <span class="stat-label">Movement</span>
+                    </div>
+                </div>
+                <div class="map-features">
+                    <span class="feature-tag">🎿 ZIP LINES</span>
+                    <span class="feature-tag">🧊 EXTREME VERTICAL</span>
+                    <span class="feature-tag">🎯 ANGLES</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-card">
+            <div class="map-visual">
+                <div class="map-icon">🏝️</div>
+            </div>
+            <div class="map-info">
+                <div class="map-location">🇧🇷 BRAZIL</div>
+                <h2 class="map-name">BREEZE</h2>
+                <p class="map-description">
+                    브라질의 열대 섬을 배경으로 한 맵입니다. 넓은 오픈 공간과 긴 사거리의 
+                    교전이 특징이며, 한쪽 사이트는 넓고 다른 쪽은 복잡한 대조적인 구조를 
+                    가지고 있습니다. 오퍼레이터와 장거리 무기에 유리합니다.
+                </p>
+                <div class="map-stats">
+                    <div class="stat">
+                        <span class="stat-value">2</span>
+                        <span class="stat-label">Sites</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">★★★</span>
+                        <span class="stat-label">Complexity</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">OPEN</span>
+                        <span class="stat-label">Space</span>
+                    </div>
+                </div>
+                <div class="map-features">
+                    <span class="feature-tag">🌴 OPEN SPACES</span>
+                    <span class="feature-tag">🎯 LONG RANGE</span>
+                    <span class="feature-tag">☀️ TROPICAL</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-card">
+            <div class="map-visual">
+                <div class="map-icon">🌙</div>
+            </div>
+            <div class="map-info">
+                <div class="map-location">🇵🇹 PORTUGAL</div>
+                <h2 class="map-name">HAVEN</h2>
+                <p class="map-description">
+                    포르투갈을 배경으로 한 맵으로, VALORANT에서 유일하게 3개의 사이트를 
+                    가진 특별한 맵입니다. 수비와 공격 모두에게 새로운 전략이 필요하며, 
+                    로테이션과 팀 분배가 핵심입니다.
+                </p>
+                <div class="map-stats">
+                    <div class="stat">
+                        <span class="stat-value">3</span>
+                        <span class="stat-label">Sites</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">★★★★</span>
+                        <span class="stat-label">Complexity</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">TRI</span>
+                        <span class="stat-label">Layout</span>
+                    </div>
+                </div>
+                <div class="map-features">
+                    <span class="feature-tag">🎲 THREE SITES</span>
+                    <span class="feature-tag">🔄 ROTATION HEAVY</span>
+                    <span class="feature-tag">🎯 STRATEGIC</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-card">
+            <div class="map-visual">
+                <div class="map-icon">🌊</div>
+            </div>
+            <div class="map-info">
+                <div class="map-location">🇺🇸 USA</div>
+                <h2 class="map-name">PEARL</h2>
+                <p class="map-description">
+                    포르투갈 리스본 아래 숨겨진 수중 도시를 배경으로 합니다. 
+                    미드 컨트롤이 중요하고 두 사이트 모두 독특한 플레이 스타일을 
+                    요구합니다. 깔끔한 레이아웃과 명확한 전투 구역이 특징입니다.
+                </p>
+                <div class="map-stats">
+                    <div class="stat">
+                        <span class="stat-value">2</span>
+                        <span class="stat-label">Sites</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">★★★</span>
+                        <span class="stat-label">Complexity</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">MID</span>
+                        <span class="stat-label">Control</span>
+                    </div>
+                </div>
+                <div class="map-features">
+                    <span class="feature-tag">🌊 UNDERWATER CITY</span>
+                    <span class="feature-tag">🎯 MID FOCUS</span>
+                    <span class="feature-tag">🏛️ CLEAN LAYOUT</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-card">
+            <div class="map-visual">
+                <div class="map-icon">🌺</div>
+            </div>
+            <div class="map-info">
+                <div class="map-location">🌴 OMEGA EARTH</div>
+                <h2 class="map-name">LOTUS</h2>
+                <p class="map-description">
+                    고대 인도 유적을 배경으로 한 맵으로, 회전 문과 파괴 가능한 벽이 
+                    특징입니다. Haven에 이어 두 번째로 3개의 사이트를 가진 맵이며, 
+                    독특한 메커니즘들이 다양한 전략을 가능하게 합니다.
+                </p>
+                <div class="map-stats">
+                    <div class="stat">
+                        <span class="stat-value">3</span>
+                        <span class="stat-label">Sites</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">★★★★★</span>
+                        <span class="stat-label">Complexity</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">MECH</span>
+                        <span class="stat-label">Features</span>
+                    </div>
+                </div>
+                <div class="map-features">
+                    <span class="feature-tag">🚪 ROTATING DOORS</span>
+                    <span class="feature-tag">💥 BREAKABLE WALLS</span>
+                    <span class="feature-tag">🏛️ THREE SITES</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">
+            © 2026 VALORANT ESPORTS. All rights reserved.<br>
+            2026 KIMDONGHWI PORTFOLIO
+        </p>
+    </footer>
+
+    <script>
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.map-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(50px)';
+            card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
